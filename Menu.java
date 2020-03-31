@@ -5,10 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.HeadlessException;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.AttributedString;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -18,12 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class Menu extends JFrame implements ActionListener{
+public class Menu extends JFrame{
 
 	JPanel panel;
-	static JLabel label;
-	static JButton newGame, settings, exit, authors;
-	Shape shape;
+	JLabel label;
+	JButton newGame, settings, exit, authors;
 	static Boolean language = true;
 	public void language() {
 		if(language == true) {
@@ -82,7 +79,9 @@ public class Menu extends JFrame implements ActionListener{
 		authors.setAlignmentX(Component.CENTER_ALIGNMENT);
 		exit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
+		newGame.addActionListener(new NewGameListener(this));
 		settings.addActionListener(new SettingsListener(this));
+		authors.addActionListener(new AuthorsListener(this));
 		
 		exit.addActionListener(new ActionListener() {
             @Override
@@ -104,15 +103,9 @@ public class Menu extends JFrame implements ActionListener{
 		panel.add(exit);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-	}
-
 	public static void main(String[] args) {
 		//Menu.setDefaultLookAndFeelDecorated(true);
 		Menu frame = new Menu();
-		//frame.pack();
 		frame.setVisible(true);
 	}
 

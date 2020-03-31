@@ -4,13 +4,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 
 import javax.swing.JButton;
 
 public class RoundButton extends JButton {
-
-    Shape shape;
 	
 		public RoundButton(String label) {
 	        super(label);

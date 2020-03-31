@@ -3,17 +3,17 @@ package game;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SettingsListener implements ActionListener {
+public class NewGameListener implements ActionListener {
 
 	Menu menu;
 	
-	public SettingsListener(Menu m) {
+	public NewGameListener(Menu m) {
 		menu = m;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		Settings frame2 = new Settings();
+		BoardGraf frame2 = new BoardGraf();
 		frame2.setVisible(true);
 		menu.setVisible(false);
 		menu.setDefaultCloseOperation(menu.EXIT_ON_CLOSE);
@@ -22,6 +22,7 @@ public class SettingsListener implements ActionListener {
 	}
 
 	public static void main(String[] args) {
+		// TODO Auto-generated method stub
 
 	}
 

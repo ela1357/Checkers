@@ -61,10 +61,10 @@ public class Settings extends JFrame implements ActionListener{
 		back = new RoundButton("");
 		back.setFont(font3);
 		
-		pl.setMinimumSize(new Dimension(200, 50));
-		pl.setMaximumSize(new Dimension(200, 50));
-		eng.setMinimumSize(new Dimension(200, 50));
-		eng.setMaximumSize(new Dimension(200, 50));
+		pl.setMinimumSize(new Dimension(150, 50));
+		pl.setMaximumSize(new Dimension(150, 50));
+		eng.setMinimumSize(new Dimension(150, 50));
+		eng.setMaximumSize(new Dimension(150, 50));
 		back.setMinimumSize(new Dimension(300, 70));
 		back.setMaximumSize(new Dimension(300, 70));
 		
