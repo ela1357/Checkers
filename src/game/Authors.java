@@ -99,10 +99,5 @@ public class Authors extends JFrame implements ActionListener{
 	}
 	
 
-	public static void main(String[] args) {
-		Authors frame = new Authors();
-		frame.setVisible(true);
-
-	}
 
 }

@@ -114,10 +114,4 @@ public class Settings extends JFrame implements ActionListener{
 		this.dispose();
 	}
 	
-
-	public static void main(String[] args) {
-		Settings frame = new Settings();
-		frame.setVisible(true);
-	}
-
 }
