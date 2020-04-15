@@ -13,8 +13,9 @@ public class NewGameListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		BoardGraf frame2 = new BoardGraf();
-		frame2.setVisible(true);
+		//BoardGraf frame2 = new BoardGraf();
+		//frame2.setVisible(true);
+		Checkers checkers = new Checkers();
 		menu.setVisible(false);
 		menu.setDefaultCloseOperation(menu.EXIT_ON_CLOSE);
 		menu.dispose();
