@@ -7,6 +7,6 @@ import javax.swing.JLabel;
 public class BlankField extends JLabel {
 
 	public BlankField() {
-		setBackground(Color.white);
+		setBackground(new Color(255, 247, 241));
 	}
 }

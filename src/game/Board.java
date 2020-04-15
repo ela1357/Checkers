@@ -25,6 +25,7 @@ public class Board extends JFrame{
 		for (int i=0; i<10; i++) {
 			for (int j=0; j<5; j++) {
 				fields[i][j]=new Field();
+				fields[i][j].setText("i = " + i + "\nj = " + j);
 				fields[i][j].setPos(j, i);
 				fields[i][j].setEnabled(false);
 				fields[i][j].setLayout(new GridLayout(1, 1));
@@ -41,8 +42,8 @@ public class Board extends JFrame{
 	}
 	void setPawns() {
 		for (int i=0; i<20; i++) {
-			whites[i] = new Pawn(fields[0][0], true);
-			blacks[i] = new Pawn(fields[0][0], false);
+			whites[i] = new Pawn(fields[0][0], true, this);
+			blacks[i] = new Pawn(fields[0][0], false, this);
 		}
 		for (int i=0; i<4; i++) {
 			for (int j=0; j<5; j++) {
@@ -95,7 +96,7 @@ public class Board extends JFrame{
 		}
 	}
 	
-	void disableAllF() {
+	void disableAllF() {       								//zamykanie pól
 		for (int i=0; i<4; i++) {
 			if (this.pickedPawn.pos.neighbours[i]!=Board.nullField) {
 				if (this.pickedPawn.pos.neighbours[i].neighbours[i]!=Board.nullField) {
@@ -109,5 +110,47 @@ public class Board extends JFrame{
 			}
 		}
 		this.pickedPawn.pos.setEnabled(false);
+	}
+	
+	void openAll(Boolean side) {						// odblokowanie pionków które mog¹ siê ruszyæ
+		Boolean n=true;
+		if (!side) {
+			for (int i=0; i<20; i++) {
+				if (whites[i].pos!=nullField&&whites[i].canCapture()) {
+					whites[i].setEnabled(true);
+					n=false;
+				}
+			}
+			if (n)
+				for (int i=0; i<20; i++) {
+					whites[i].setEnabled(true);
+				}
+		}
+		else {
+			for (int i=0; i<20; i++) {
+				if (blacks[i].pos!=nullField&&blacks[i].canCapture()) {
+					blacks[i].setEnabled(true);
+					n=false;
+				}
+			}
+			if (n)
+				for (int i=0; i<20; i++) {
+					blacks[i].setEnabled(true);
+				}
+		}
+	if (side==pickedPawn.side)
+		pickedPawn.setEnabled(false);
+	}
+	
+	void canEnd () {											// zakoñczenie gry
+		Boolean n=true;
+		for (int i=0; i<20; i++) {
+			if (whites[i].pos!=nullField)
+				n=false;
+			if (blacks[i].pos!=nullField)
+				n=false;
+		}
+		if (n)
+			System.exit(0);
 	}
 }

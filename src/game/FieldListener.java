@@ -26,6 +26,7 @@ public class FieldListener implements ActionListener {
 			thisF.jumpedOver.pos.hasPawn=false;
 			thisF.jumpedOver.pos.remove(0);
 			thisF.jumpedOver.pos.repaint();
+			thisF.jumpedOver.pos = Board.nullField;
 			thisF.jumpedOver = Board.nullPawn;
 		}
 		
@@ -37,7 +38,17 @@ public class FieldListener implements ActionListener {
 		thisF.hasPawn=true;
 		
 		if(n<2) {
-			openAll();
+			thisB.openAll(thisB.pickedPawn.side);
+			
+			
+			for (int i=0; i<5; i++) {
+				if (thisB.fields[0][i]==thisF&&thisB.pickedPawn.side) {
+					thisB.pickedPawn.isKing=true;
+				}
+				if (thisB.fields[9][i]==thisF&&!thisB.pickedPawn.side) {
+					thisB.pickedPawn.isKing=true;
+				}
+			}
 		}
 		else {
 			thisB.pickedPawn.setEnabled(false);
@@ -45,16 +56,9 @@ public class FieldListener implements ActionListener {
 			((PawnListener)(thisB.pickedPawn.getActionListeners()[0])).findMoves();
 			((PawnListener)(thisB.pickedPawn.getActionListeners()[0])).closeAll();
 		}
+		thisB.canEnd();        
 	}
 	
-	void openAll() {
-		for (int i=0; i<20; i++) {
-			if (!thisB.pickedPawn.side)
-				thisB.whites[i].setEnabled(true);
-			else
-				thisB.blacks[i].setEnabled(true);
-		}
-		thisB.pickedPawn.setEnabled(false);
-	}
+	
 	
 }

@@ -23,7 +23,7 @@ public class Field extends JButton{
 	
 	Field(){
 		hasPawn=false;
-		setBackground(Color.blue);
+		setBackground(new Color(208, 166, 128));
 		jumpedOver = Board.nullPawn;
 		neighbours = new Field [4];  //0 - lewo_góra,	1 - lewo_dó³,	2 - prawo_dó³,	3 - prawo_góra
 		for (int i =0; i<4; i++)

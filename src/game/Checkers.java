@@ -1,7 +1,5 @@
 package game;
 
-import java.util.concurrent.Semaphore;
-
 public class Checkers {
 	Board board;
 	boolean turn;   // 1 - bia³e,    0 - czarne
