@@ -1,9 +1,20 @@
 package game;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import javax.swing.JFrame;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Board extends JFrame{
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+
+public class Board extends JFrame implements ActionListener{
 	Field [][] fields = new Field [10][5];
 	Pawn [] whites = new Pawn [20];
 	Pawn [] blacks = new Pawn [20];
@@ -11,31 +22,73 @@ public class Board extends JFrame{
 	public static final Pawn nullPawn = new Pawn(nullField, true);
 	Pawn pickedPawn;
 	
+	JPanel panel, center;
+	JButton back;
+	static Boolean res;
+	
 	
 	Board(){
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setSize(1000, 1000);
-		setLayout(new GridLayout(10, 10));
+		setSize(1100, 1000);
+		setMinimumSize(new Dimension(1100, 1000));
+		
+		panel = new JPanel(new GridBagLayout());
+		center = new JPanel(new GridLayout(10, 10));
+		center.setPreferredSize(new Dimension(900, 900));
+		center.setBorder(new LineBorder(Color.GRAY));
+		
+		panel.setBackground(new Color(226, 196, 173));
+		center.setBackground(Color.white);
+		
 		setFields();
 		setNeis();	
 		setPawns();
+		
+		back = new RoundButton3("Wróæ");
+		GridBagConstraints b = new GridBagConstraints();
+		GridBagConstraints c = new GridBagConstraints();
+		b.anchor = GridBagConstraints.LAST_LINE_START;
+		c.anchor = GridBagConstraints.CENTER;
+		//b.ipady = 0;
+		//b.weightx = 0.1;
+		b.fill = GridBagConstraints.HORIZONTAL;
+		b.insets = new Insets(500,0,0,75);
+		panel.add(back, b);
+		panel.add(center, c);
+		
+		
+
+		back.addActionListener(this);
+		
+		add(panel);
 	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Menu frame2 = new Menu();
+		frame2.setVisible(true);
+		this.setVisible(false);
+		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.dispose();
+		
+	}
+	
 	
 	void setFields() {
 		for (int i=0; i<10; i++) {
 			for (int j=0; j<5; j++) {
 				fields[i][j]=new Field();
-				fields[i][j].setText("i = " + i + "\nj = " + j);
+				//fields[i][j].setText("i = " + i + "\nj = " + j);
 				fields[i][j].setPos(j, i);
 				fields[i][j].setEnabled(false);
 				fields[i][j].setLayout(new GridLayout(1, 1));
 				if(i%2==1) {
-					add(fields[i][j]);
-					add(new BlankField());
+					center.add(fields[i][j]);
+					center.add(new BlankField());
 				}
 				else {
-					add(new BlankField());
-					add(fields[i][j]);
+					center.add(new BlankField());
+					center.add(fields[i][j]);
 				}
 			}
 		}
@@ -129,8 +182,9 @@ public class Board extends JFrame{
 	void openAll(Boolean side) {						// odblokowanie pionków które mog¹ siê ruszyæ
 		Boolean n=true;
 		int m=0;
+		Boolean win = true;
 
-		if (!side) {
+		if (!side) {									//otwarcie bia³ych
 			for (int i=0; i<20; i++) {
 				if(whites[i].pos!=nullField) {
 					for (int j=0; j<4; j++) {
@@ -140,22 +194,41 @@ public class Board extends JFrame{
 					}
 				}
 			}
-			for (int i=0; i<20; i++) {
-				if(whites[i].pos!=nullField) {
-					for (int j=0; j<4; j++) {
-						if (((PawnListener)whites[i].getActionListeners()[0]).captureFound(0, j, whites[i].pos)==m)
-							whites[i].setEnabled(true);
+			if (m!=0) {
+				win=false;
+				for (int i=0; i<20; i++) {
+					if(whites[i].pos!=nullField) {
+						for (int j=0; j<4; j++) {
+							if (((PawnListener)whites[i].getActionListeners()[0]).captureFound(0, j, whites[i].pos)==m)
+								whites[i].setEnabled(true);
+						}
 					}
 				}
 			}
 			if(m==0) {
 				for (int i=0; i<20; i++) {
 					if(whites[i].pos!=nullField) {
-						whites[i].setEnabled(true);
+						if (!whites[i].isKing) {
+							if (!whites[i].pos.neighbours[0].hasPawn&&whites[i].pos.neighbours[0]!=nullField) {
+								whites[i].setEnabled(true);
+								win=false;
+							}
+							else if(!whites[i].pos.neighbours[3].hasPawn&&whites[i].pos.neighbours[3]!=nullField) {
+								whites[i].setEnabled(true);
+								win=false;
+							}
+						}
+						else {								//isKing
+							for (int j=0; j<4; j++) {
+								if (!whites[i].pos.neighbours[j].hasPawn&&whites[i].pos.neighbours[j]!=nullField) {
+									whites[i].setEnabled(true);
+									win=false;
+								}
+							}
+						}
 					}
 				}
 			}
-			
 			
 			/*for (int i=0; i<20; i++) {
 				if (whites[i].pos!=nullField&&whites[i].canCapture()) {
@@ -168,7 +241,7 @@ public class Board extends JFrame{
 					whites[i].setEnabled(true);
 				}*/
 		}
-		else {
+		else {											//otwarcie czarnych
 			for (int i=0; i<20; i++) {
 				if(blacks[i].pos!=nullField) {
 					for (int j=0; j<4; j++) {
@@ -178,18 +251,38 @@ public class Board extends JFrame{
 					}
 				}
 			}
-			for (int i=0; i<20; i++) {
-				if(blacks[i].pos!=nullField) {
-					for (int j=0; j<4; j++) {
-						if (((PawnListener)blacks[i].getActionListeners()[0]).captureFound(0, j, blacks[i].pos)==m)
-							blacks[i].setEnabled(true);
+			if (m!=0) {
+				win=false;
+				for (int i=0; i<20; i++) {
+					if(blacks[i].pos!=nullField) {
+						for (int j=0; j<4; j++) {
+							if (((PawnListener)blacks[i].getActionListeners()[0]).captureFound(0, j, blacks[i].pos)==m)
+								blacks[i].setEnabled(true);
+						}
 					}
 				}
 			}
 			if(m==0) {
 				for (int i=0; i<20; i++) {
 					if(blacks[i].pos!=nullField) {
-						blacks[i].setEnabled(true);
+						if (!blacks[i].isKing) {
+							if (!blacks[i].pos.neighbours[1].hasPawn&&blacks[i].pos.neighbours[1]!=nullField) {
+								blacks[i].setEnabled(true);
+								win=false;
+							}
+							else if(!blacks[i].pos.neighbours[2].hasPawn&&blacks[i].pos.neighbours[2]!=nullField) {
+								blacks[i].setEnabled(true);
+								win=false;
+							}
+						}
+						else {								//isKing
+							for (int j=0; j<4; j++) {
+								if (!blacks[i].pos.neighbours[j].hasPawn&&blacks[i].pos.neighbours[j]!=nullField) {
+									blacks[i].setEnabled(true);
+									win=false;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -207,17 +300,43 @@ public class Board extends JFrame{
 		}
 	if (side==pickedPawn.side)
 		pickedPawn.setEnabled(false);
+	if (win)
+		end(side);
 	}
 	
 	void canEnd () {											// zakoñczenie gry
 		Boolean n=true;
+		Boolean m=true;
 		for (int i=0; i<20; i++) {
 			if (whites[i].pos!=nullField)
 				n=false;
 			if (blacks[i].pos!=nullField)
-				n=false;
+				m=false;
 		}
-		if (n)
-			System.exit(0);
+		/*if (n||m)
+			System.exit(0);*/
+		if(n) {
+			res = false;
+			Result frame = new Result(this);
+			frame.setVisible(true);
+		}
+		if(m) {
+			res = true;
+			Result frame = new Result(this);
+			frame.setVisible(true);
+		}	
+	}
+	
+	void end(Boolean side) {
+		if (side) {
+			res = true;
+			Result frame = new Result(this);
+			frame.setVisible(true);
+		}
+		else {
+			res = false;
+			Result frame = new Result(this);
+			frame.setVisible(true);
+		}
 	}
 }

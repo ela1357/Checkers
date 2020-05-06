@@ -4,19 +4,18 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
-
-import com.sun.nio.sctp.SendFailedNotification;
 
 public class Pawn extends JButton{
 	Field pos;
 	Board thisB;
 	boolean side, picked; //(side) 1 - bia³e,    0 - czarne
 	boolean isKing;
-	
 	
 	public Pawn(Field info, boolean side) {
 		this.side = side;
@@ -37,43 +36,67 @@ public class Pawn extends JButton{
 		this.addActionListener(lis);
 	}
 	
-	protected void paintComponent(Graphics g) {
+	/*protected void paintComponent(Graphics g) {
+		
+		File imageFile = new File("crown.png");
+        BufferedImage image = null;
+ 		try {
+ 			image = ImageIO.read(imageFile);
+ 		} catch (IOException e) {
+ 			System.err.println("Blad odczytu obrazka");
+ 			e.printStackTrace();
+ 		}
+		
 		if (side) {
 			g.setColor(new Color(250, 238, 216));
-			if (isKing) g.setColor(Color.green);
+			g.fillOval(0, 10, 55, 55);
+			//if (isKing) g.drawImage(image, getX()-8, getY()+10, getWidth()-15, getHeight()-35, null);
 		}
 		else{
 			g.setColor(new Color(63, 39, 28));
-			if (isKing) g.setColor(Color.blue);
+			g.fillOval(0, 10, 55, 55);
+			//if (isKing) g.drawImage(image, getX()-8, getY()+10, getWidth()-15, getHeight()-35, null);
 		}
-		g.fillOval(3, 10, 60, 60);
+		//g.fillOval(0, 10, 55, 55);
 
     	super.paintComponent(g);
-    }
+    }*/
   
     protected void paintBorder(Graphics g) {
+    	File imageFile = new File("crown.png");
+        BufferedImage image = null;
+ 		try {
+ 			image = ImageIO.read(imageFile);
+ 		} catch (IOException e) {
+ 			System.err.println("Blad odczytu obrazka");
+ 			e.printStackTrace();
+ 		}
     	int lineWidth = 3;
     	Graphics2D g2d = (Graphics2D) g;
     	BasicStroke bs1 = new BasicStroke(lineWidth);
     	g2d.setStroke(bs1);
     	if (side) {
 			g.setColor(new Color(250, 238, 216));
-			if (isKing) g.setColor(Color.green);
+			g.fillOval(0, 10, 55, 55);
+			if (isKing) g.drawImage(image, getX()-8, getY()+10, getWidth()-15, getHeight()-35, null);
+			//if (isKing) g.setColor(Color.green);
 		}
 		else{
 			g.setColor(new Color(63, 39, 28));
-			if (isKing) g.setColor(Color.blue);
+			g.fillOval(0, 10, 55, 55);
+			if (isKing) g.drawImage(image, getX()-8, getY()+10, getWidth()-15, getHeight()-35, null);
+			//if (isKing) g.setColor(Color.blue);
 		}
-    	g.fillOval(3, 10, 60, 60);
+    	//g.fillOval(0, 10, 55, 55);
     	if (picked == true && this.isEnabled() == true) {
 			g.setColor(new Color(0, 172, 0));
 			g2d.setStroke(new BasicStroke(3	));
-			g.drawOval(3, 10, 60, 60);
+			g.drawOval(0, 10, 55, 55);
 		}
     	else if (this.isEnabled() == true) {
     		g.setColor(new Color(115, 120, 193));
 			g2d.setStroke(new BasicStroke(3));
-			g.drawOval(3, 10, 60, 60);
+			g.drawOval(0, 10, 55, 55);
     	}
     }
    

@@ -7,7 +7,7 @@ public class Checkers {
 	public Checkers() {
 		turn = true;
 		startGame();
-		move();
+		//move();
 	}
 	/*
 	public static void main(String[] args) {
@@ -18,6 +18,13 @@ public class Checkers {
 	void startGame() {
 		board = new Board();
 		board.setVisible(true);
+		for (int i = 0; i<20; i++) {
+			board.whites[i].setEnabled(false);
+			board.blacks[i].setEnabled(false);
+		}
+		for (int i=0; i<5; i++) {
+			board.whites[i].setEnabled(true);
+		}
 	}
 	
 	void move(){

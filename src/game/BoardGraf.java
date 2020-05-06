@@ -73,6 +73,10 @@ public class BoardGraf extends JFrame implements ActionListener{
 		frame.setVisible(true);
 	}
 
+	
+	
+	
+	
 }
 
 

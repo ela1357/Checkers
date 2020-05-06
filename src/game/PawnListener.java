@@ -128,7 +128,7 @@ public class PawnListener implements ActionListener {
 	}
 
 	
-	int captureFound(int n, int init, Field virtF) {		// n - iloœæ biæ do tej pory, init - kierunek z którego przybu³ pionek, virtF - aktualnie rozpatrywane pole
+	int captureFound(int n, int init, Field virtF) {		// n - iloœæ biæ do tej pory, init - kierunek z którego przyby³ pionek, virtF - aktualnie rozpatrywane pole
 		int m=0;
 		int j=0;
 		if (init==0)
@@ -174,7 +174,9 @@ public class PawnListener implements ActionListener {
 	}
 	
 	int captureFurth (int n, Field virtF, int i) {									// i - strona w któr¹ sprawdza
-    	if (virtF.neighbours[i]==Board.nullField||virtF.neighbours[i].neighbours[i]==Board.nullField) {
+    	if (n>6)
+    		return 6;
+		if (virtF.neighbours[i]==Board.nullField||virtF.neighbours[i].neighbours[i]==Board.nullField) {
     		return n;				//brak biæ
     	}
     	else {
@@ -193,7 +195,8 @@ public class PawnListener implements ActionListener {
     }
 	
 	int nextCaptures (int n, Field virtF, int i) {
-		int out=0;
+		//int out=0;
+		int out=n;												
 		while (virtF!=Board.nullField) {
 			int a = captureFound(n, i, virtF);
 			if (out<a)
@@ -220,15 +223,16 @@ public class PawnListener implements ActionListener {
 					
 					tmpF=tmpF.neighbours[i];
 				}
-				while (virtF!=Board.nullField&&!virtF.hasPawn) {
-					if (captureFound(1, i, virtF)==n) {
-						virtF.setEnabled(true);
-						virtF.jumpedOver=jumpedOver;
-						virtF.lis = new FieldListener(virtF, thisB, m);
-						virtF.addActionListener(virtF.lis);
+				if(n==m)
+					while (virtF!=Board.nullField&&!virtF.hasPawn) {
+						if (captureFound(1, i, virtF)==n) {
+							virtF.setEnabled(true);
+							virtF.jumpedOver=jumpedOver;
+							virtF.lis = new FieldListener(virtF, thisB, m);
+							virtF.addActionListener(virtF.lis);
+						}
+					virtF=virtF.neighbours[i];
 					}
-				virtF=virtF.neighbours[i];
-				}
 			}
 		}
 	}

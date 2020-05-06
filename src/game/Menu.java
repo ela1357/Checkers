@@ -16,8 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class Menu extends JFrame{
+public class Menu extends JFrame implements ActionListener{
 
+	Checkers checkers;
 	JPanel panel;
 	JLabel label;
 	JButton newGame, settings, exit, authors;
@@ -107,6 +108,17 @@ public class Menu extends JFrame{
 		//Menu.setDefaultLookAndFeelDecorated(true);
 		Menu frame = new Menu();
 		frame.setVisible(true);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		//BoardGraf frame2 = new BoardGraf();
+		//frame2.setVisible(true);
+		checkers = new Checkers();
+		this.setVisible(false);
+		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.dispose();
+
 	}
 
 }
