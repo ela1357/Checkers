@@ -16,6 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import buttons.RoundButton;
+import buttons.RoundButton2;
+
 public class Settings extends JFrame implements ActionListener{
 
 	JPanel panel;
@@ -45,7 +48,7 @@ public class Settings extends JFrame implements ActionListener{
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		this.add(panel);
 		panel.setBorder(new EmptyBorder(100, 300, 200, 300));
-		panel.setBackground(new Color(226, 196, 173));
+		panel.setBackground(new Color(229, 169, 126));
 		
 		Font font = new Font("LucidaSans", Font.PLAIN, 20);
 		Font font2 = new Font("Hanging Baseline", Font.HANGING_BASELINE, 70);
@@ -114,10 +117,4 @@ public class Settings extends JFrame implements ActionListener{
 		this.dispose();
 	}
 	
-
-	public static void main(String[] args) {
-		Settings frame = new Settings();
-		frame.setVisible(true);
-	}
-
 }

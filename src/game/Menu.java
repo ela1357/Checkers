@@ -14,10 +14,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-public class Menu extends JFrame{
+import buttons.RoundButton;
+import listeners.AuthorsListener;
+import listeners.NewGameListener;
+import listeners.SettingsListener;
 
+public class Menu extends JFrame implements ActionListener{
+
+	Checkers checkers;
 	JPanel panel;
 	JLabel label;
 	JButton newGame, settings, exit, authors;
@@ -48,7 +55,7 @@ public class Menu extends JFrame{
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		this.add(panel);
 		panel.setBorder(new EmptyBorder(100, 300, 200, 300));
-		panel.setBackground(new Color(226, 196, 173));
+		panel.setBackground(new Color(229, 169, 126));
 		
 		Font font = new Font("Center baseline", Font.CENTER_BASELINE, 80);
 		Font font2 = new Font("LucidaSans", Font.PLAIN, 30);
@@ -104,9 +111,26 @@ public class Menu extends JFrame{
 	}
 
 	public static void main(String[] args) {
-		//Menu.setDefaultLookAndFeelDecorated(true);
-		Menu frame = new Menu();
-		frame.setVisible(true);
+		SwingUtilities.invokeLater(new Runnable() {
+
+			public void run() {
+				//Menu.setDefaultLookAndFeelDecorated(true);
+				Menu frame = new Menu();
+				frame.setVisible(true);
+			}
+		});
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		
+		//BoardGraf frame2 = new BoardGraf();
+		//frame2.setVisible(true);
+		checkers = new Checkers();
+		this.setVisible(false);
+		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.dispose();
+
 	}
 
 }
