@@ -197,7 +197,7 @@ public class PawnListener implements ActionListener {
 	int nextCaptures (int n, Field virtF, int i) {
 		//int out=0;
 		int out=n;												
-		while (virtF!=Board.nullField) {
+		while (virtF!=Board.nullField&&!virtF.hasPawn) {
 			int a = captureFound(n, i, virtF);
 			if (out<a)
 				out=a;
