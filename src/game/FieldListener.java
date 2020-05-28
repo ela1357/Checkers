@@ -49,6 +49,8 @@ public class FieldListener implements ActionListener {
 					thisB.pickedPawn.isKing=true;
 				}
 			}
+			if (thisB.pickedPawn.side && thisB.bot!=null)
+				thisB.bot.goForIt();
 		}
 		else {
 			thisB.pickedPawn.setEnabled(false);
@@ -56,6 +58,7 @@ public class FieldListener implements ActionListener {
 			((PawnListener)(thisB.pickedPawn.getActionListeners()[0])).findMoves();
 			((PawnListener)(thisB.pickedPawn.getActionListeners()[0])).closeAll();
 		}
+		
 		//thisB.canEnd();        
 	}
 	

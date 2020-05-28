@@ -14,6 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import bot.Tree;
+import bot.VBoard;
 import buttons.RoundButton3;
 
 public class Board extends JFrame implements ActionListener{
@@ -23,6 +25,7 @@ public class Board extends JFrame implements ActionListener{
 	public static final Field nullField = new Field();
 	public static final Pawn nullPawn = new Pawn(nullField, true);
 	Pawn pickedPawn;
+	Tree bot = null;
 	
 	JPanel panel, center;
 	JButton back;
@@ -37,7 +40,7 @@ public class Board extends JFrame implements ActionListener{
 		}
 	}
 	
-	Board(){
+	public Board(){
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(1100, 1000);
 		setMinimumSize(new Dimension(1100, 1000));
@@ -71,6 +74,44 @@ public class Board extends JFrame implements ActionListener{
 		back.addActionListener(this);
 		
 		add(panel);
+	}
+	
+	public Board(Tree boto){
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setSize(1100, 1000);
+		setMinimumSize(new Dimension(1100, 1000));
+		
+		panel = new JPanel(new GridBagLayout());
+		center = new JPanel(new GridLayout(10, 10));
+		center.setPreferredSize(new Dimension(900, 900));
+		center.setBorder(new LineBorder(Color.GRAY));
+		
+		panel.setBackground(new Color(245, 234, 225));
+		center.setBackground(Color.white);
+		
+		setFields();
+		setNeis();	
+		setPawns();
+		
+		back = new RoundButton3("");
+		GridBagConstraints b = new GridBagConstraints();
+		GridBagConstraints c = new GridBagConstraints();
+		b.anchor = GridBagConstraints.LAST_LINE_START;
+		c.anchor = GridBagConstraints.CENTER;
+		//b.ipady = 0;
+		//b.weightx = 0.1;
+		b.fill = GridBagConstraints.HORIZONTAL;
+		b.insets = new Insets(500,0,0,75);
+		panel.add(back, b);
+		panel.add(center, c);
+		
+		language();
+
+		back.addActionListener(this);
+		
+		add(panel);
+		
+		bot=boto;
 	}
 	
 	@Override
@@ -348,5 +389,100 @@ public class Board extends JFrame implements ActionListener{
 			Result frame = new Result(this);
 			frame.setVisible(true);
 		}
+	}
+	
+	public VBoard giveSitToBot() {
+		int[][] tmp = new int[10][10];
+		int whiteCtr = 0;
+		int blackCtr = 0;
+		int whiteKingCtr = 0;
+		int blackKingCtr = 0;
+		for (int i=0; i<10; i++) {
+			for (int j=0; j<10; j++) {
+				tmp[i][j] = -1;
+			}
+		}
+		for (int i=0; i<10; i++) {
+			for (int j=0; j<5; j++) {
+				if (!fields[i][j].hasPawn)
+					tmp[i][2*j + 1 - (i%2)]=0;
+				if (fields[i][j].hasPawn && ((Pawn)fields[i][j].getComponent(0)).side && ((Pawn)fields[i][j].getComponent(0)).isKing) {
+					tmp[i][2*j + 1 - (i%2)]=3;
+					whiteKingCtr++;
+				}
+				if (fields[i][j].hasPawn && !((Pawn)fields[i][j].getComponent(0)).side && ((Pawn)fields[i][j].getComponent(0)).isKing) {
+					tmp[i][2*j + 1 - (i%2)]=4;
+					blackKingCtr++;
+				}
+				if (fields[i][j].hasPawn && ((Pawn)fields[i][j].getComponent(0)).side && !((Pawn)fields[i][j].getComponent(0)).isKing) {
+					tmp[i][2*j + 1 - (i%2)]=1;
+					whiteCtr++;
+				}
+				if (fields[i][j].hasPawn && !((Pawn)fields[i][j].getComponent(0)).side && !((Pawn)fields[i][j].getComponent(0)).isKing) {
+					tmp[i][2*j + 1 - (i%2)]=2;
+					blackCtr++;
+				}
+			}
+		}
+		return new VBoard(tmp, whiteCtr, blackCtr, false, whiteKingCtr, blackKingCtr);
+	}
+	
+	public void setSitFromBot(VBoard inp) {
+		if(inp.whiteCtr==0 && inp.whiteKingCtr==0) {
+			end (false);
+			return;
+		}
+		for (int i=0; i<20; i++) {
+			whites[i].pos.hasPawn = false;
+			whites[i].setEnabled(false);
+			whites[i].pos.remove(whites[i]);
+			whites[i].pos = nullField;
+			blacks[i].pos.hasPawn = false;
+			blacks[i].setEnabled(false);
+			blacks[i].pos.remove(blacks[i]);
+			blacks[i].pos = nullField;
+		}
+		int whiteCtr = 0;
+		int blackCtr = 0;
+		for (int i=0; i<10; i++) {
+			for (int j=0; j<5; j++) {
+				switch (inp.board[i][2*j + 1 - (i%2)]) {
+				case 1: {
+					fields[i][j].add(whites[whiteCtr]);
+					fields[i][j].hasPawn = true;
+					whites[whiteCtr].pos = fields[i][j];
+					whites[whiteCtr].isKing=false;
+					whiteCtr++;
+					break;
+				}
+				case 2: {
+					fields[i][j].add(blacks[blackCtr]);
+					fields[i][j].hasPawn = true;
+					blacks[blackCtr].pos = fields[i][j];
+					blacks[blackCtr].isKing=false;
+					blackCtr++;
+					break;
+				}
+				case 3: {
+					fields[i][j].add(whites[whiteCtr]);
+					fields[i][j].hasPawn = true;
+					whites[whiteCtr].pos = fields[i][j];
+					whites[whiteCtr].isKing=true;
+					whiteCtr++;
+					break;
+				}
+				case 4: {
+					fields[i][j].add(blacks[blackCtr]);
+					fields[i][j].hasPawn = true;
+					blacks[blackCtr].pos = fields[i][j];
+					blacks[blackCtr].isKing=true;
+					blackCtr++;
+					break;
+				}
+				}
+			}
+		}
+		repaint();
+		openAll(false);
 	}
 }

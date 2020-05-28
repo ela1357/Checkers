@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import buttons.RoundButton;
 import listeners.AuthorsListener;
 import listeners.NewGameListener;
+import listeners.NewGameListener2;
 import listeners.SettingsListener;
 
 public class Menu extends JFrame implements ActionListener{
@@ -27,19 +28,21 @@ public class Menu extends JFrame implements ActionListener{
 	Checkers checkers;
 	JPanel panel;
 	JLabel label;
-	JButton newGame, settings, exit, authors;
+	JButton newGameS, newGameM, settings, exit, authors;
 	static Boolean language = true;
 	public void language() {
 		if(language == true) {
 			label.setText("Warcaby");
-			newGame.setText("Nowa Gra");
+			newGameM.setText("Tryb Wieloosobowy");
+			newGameS.setText("Tryb Jednoosobowy");
 			settings.setText("Ustawienia");
 			authors.setText("Twórcy");
 			exit.setText("Wyjœcie z gry");
 		}
 		else if(language == false) {
 			label.setText("Checkers");
-			newGame.setText("New Game");
+			newGameM.setText("Multiplayer");
+			newGameS.setText("Singleplayer");
 			settings.setText("Settings");
 			authors.setText("Authors");
 			exit.setText("Exit");
@@ -54,7 +57,7 @@ public class Menu extends JFrame implements ActionListener{
 		panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		this.add(panel);
-		panel.setBorder(new EmptyBorder(100, 300, 200, 300));
+		panel.setBorder(new EmptyBorder(100, 300, 100, 300));
 		panel.setBackground(new Color(229, 169, 126));
 		
 		Font font = new Font("Center baseline", Font.CENTER_BASELINE, 80);
@@ -62,8 +65,10 @@ public class Menu extends JFrame implements ActionListener{
 		label = new JLabel("");
 		label.setFont(font);
 		
-		newGame = new RoundButton("");
-		newGame.setFont(font2);
+		newGameM = new RoundButton("");
+		newGameM.setFont(font2);
+		newGameS = new RoundButton("");
+		newGameS.setFont(font2);
 		settings = new RoundButton("");
 		settings.setFont(font2);
 		authors = new RoundButton("");
@@ -71,8 +76,10 @@ public class Menu extends JFrame implements ActionListener{
 		exit = new RoundButton("");
 		exit.setFont(font2);
 		
-		newGame.setMinimumSize(new Dimension(300, 70));
-		newGame.setMaximumSize(new Dimension(300, 70));
+		newGameM.setMinimumSize(new Dimension(300, 70));
+		newGameM.setMaximumSize(new Dimension(300, 70));
+		newGameS.setMinimumSize(new Dimension(300, 70));
+		newGameS.setMaximumSize(new Dimension(300, 70));
 		settings.setMinimumSize(new Dimension(300, 70));
 		settings.setMaximumSize(new Dimension(300, 70));
 		authors.setMinimumSize(new Dimension(300, 70));
@@ -81,12 +88,14 @@ public class Menu extends JFrame implements ActionListener{
 		exit.setMaximumSize(new Dimension(300, 70));
 		
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
+		newGameM.setAlignmentX(Component.CENTER_ALIGNMENT);
+		newGameS.setAlignmentX(Component.CENTER_ALIGNMENT);
 		settings.setAlignmentX(Component.CENTER_ALIGNMENT);
 		authors.setAlignmentX(Component.CENTER_ALIGNMENT);
 		exit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		newGame.addActionListener(new NewGameListener(this));
+		newGameM.addActionListener(new NewGameListener(this));
+		newGameS.addActionListener(new NewGameListener2(this));	
 		settings.addActionListener(new SettingsListener(this));
 		authors.addActionListener(new AuthorsListener(this));
 		
@@ -101,7 +110,9 @@ public class Menu extends JFrame implements ActionListener{
 		
 		panel.add(label);
 		panel.add(Box.createRigidArea(new Dimension(0, 90)));
-		panel.add(newGame);
+		panel.add(newGameM);
+		panel.add(Box.createRigidArea(new Dimension(0, 20)));
+		panel.add(newGameS);
 		panel.add(Box.createRigidArea(new Dimension(0, 20)));
 		panel.add(settings);
 		panel.add(Box.createRigidArea(new Dimension(0, 20)));
