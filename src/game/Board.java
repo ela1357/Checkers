@@ -428,6 +428,16 @@ public class Board extends JFrame implements ActionListener{
 	}
 	
 	public void setSitFromBot(VBoard inp) {
+		VBoard old = giveSitToBot();
+		for (int i=0; i<10; i++) {
+			for (int j=0; j<10; j++) {
+				if (old.board[i][j]!=inp.board[i][j]) {
+					if (old.board[i][j]==2||old.board[i][j]==4||inp.board[i][j]==2||inp.board[i][j]==4) {
+						fields[i][(int)(((float)(j-j%2))/2)].b = true;
+					}
+				}
+			}
+		}
 		if(inp.whiteCtr==0 && inp.whiteKingCtr==0) {
 			end (false);
 			return;
@@ -484,5 +494,13 @@ public class Board extends JFrame implements ActionListener{
 		}
 		repaint();
 		openAll(false);
+	}
+	
+	public void wipeBs() {
+		for (int i=0; i<10; i++) {
+			for (int j=0; j<5; j++) {
+				fields[i][j].b=false;
+			}
+		}
 	}
 }

@@ -90,9 +90,12 @@ public class Tree implements Runnable{
 		root= new Node<VBoard>(game.giveSitToBot());
 		this.run();
 	}
+	
 
 	@Override
 	public void run() {
+		game.wipeBs();
+		
 		generate();
 		
 		VBoard move = findGoodMove();
@@ -104,14 +107,7 @@ public class Tree implements Runnable{
 				nextMove = child;
 		}
 		
-		//nextMove.getData().showBoard();
 		game.setSitFromBot(nextMove.getData());
 	}
 	
-	
-
-	/*public static void main(String[] args) {
-		Tree t1 = new Tree();
-		
-	}*/
 }
